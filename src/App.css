@@ -1,0 +1,125 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-flow: row nowrap;
+  height: 100vh;
+  width: 100vw;
+}
+
+.sidebar {
+  width: 25%;
+  font-size: 15px;
+  padding: 3px;
+}
+
+#infoButton {
+  background-color: rgb(187, 208, 209);
+}
+
+.mapError {
+  height: 100%;
+  width: 75%;
+  text-align: center;
+}
+
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+/*********************RESPONSIVE MEDIA DESIGN********************************/
+
+@media screen and (max-width: 550px) {
+
+  .sidebar,
+  #infoButton {
+    font-size: 10px;
+  }
+
+  #search {
+    font-size: 8px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+
+  .sidebar,
+  #infoButton {
+    font-size: 10%;
+  }
+
+  #search {
+    font-size: 10%;
+  }
+}
+
+@media screen and (max-width: 210px) {
+
+  .sidebar,
+  #infoButton {
+    font-size: 2px;
+  }
+
+  #search {
+    font-size: 1%;
+  }
+}
+
+#search {
+  width: 95%;
+  height: 35px;
+  text-align: center;
+  border-style: solid;
+  border-color: black;
+}
+
+.restaurantList {
+  padding: 5px;
+  margin-top: 1px;
+}
+
+.restaurants {
+  list-style: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 1px;
+  border: 1px solid;
+  align-content: center;
+  box-shadow: 1px 3px 5px #888888;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
