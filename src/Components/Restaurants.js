@@ -10,7 +10,7 @@ class Restaurants extends Component {
         <p><small>
           {this.props.location.address} <br/>
           {this.props.location.city},
-          {this.props.location.state},
+          {this.props.location.state}, <br/>
           {this.props.location.postalCode}
         </small></p>
 
