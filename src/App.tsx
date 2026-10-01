@@ -74,8 +74,6 @@ const Typewriter = ({ text }: { text: string }) => {
   )
 }
 
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY
-
 function App() {
   const [venues, setVenues] = useState<Venue[]>([])
   const [selectedVenueId, setSelectedVenueId] = useState<string | null>(null)
@@ -115,7 +113,7 @@ function App() {
     setAiDescription(null)
     try {
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
         {
           contents: [{
             parts: [{
