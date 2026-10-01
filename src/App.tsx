@@ -85,29 +85,49 @@ function App() {
   const [isDark, setIsDark] = useState(true)
 
   useEffect(() => {
-    const loadVenues = async () => {
+    const fetchPlaces = async () => {
       setLoading(true)
       try {
-        await new Promise(resolve => setTimeout(resolve, 800))
-        const mockData: Venue[] = [
-          { id: '1', name: 'Café GoodLuck', rating: 4.6, cuisine: 'Irani Cafe', location: { lat: 18.5172, lng: 73.8414, address: 'Fergusson College Rd', city: 'Pune' } },
-          { id: '2', name: 'Incognito', rating: 4.4, cuisine: 'Continental', location: { lat: 18.5617, lng: 73.9168, address: 'Phoenix Market City', city: 'Pune' } },
-          { id: '3', name: 'Hard Rock Cafe', rating: 4.5, cuisine: 'American', location: { lat: 18.5390, lng: 73.9128, address: 'Koregaon Park', city: 'Pune' } },
-          { id: '4', name: 'Barbeque Nation', rating: 4.7, cuisine: 'North Indian', location: { lat: 18.5165, lng: 73.8423, address: 'Deccan Gymkhana', city: 'Pune' } },
-          { id: '5', name: 'Cafe Goa', rating: 4.2, cuisine: 'Goan', location: { lat: 18.5618, lng: 73.9071, address: 'Viman Nagar', city: 'Pune' } },
-          { id: '6', name: 'Blue Nile', rating: 4.8, cuisine: 'Mughlai', location: { lat: 18.5219, lng: 73.8775, address: 'Camp', city: 'Pune' } },
-          { id: '7', name: 'Way Down South', rating: 4.3, cuisine: 'South Indian', location: { lat: 18.5664, lng: 73.7708, address: 'Baner', city: 'Pune' } },
-          { id: '8', name: 'Suonmoi Chinese', rating: 4.5, cuisine: 'Chinese', location: { lat: 18.5375, lng: 73.8797, address: 'Koregaon Park', city: 'Pune' } },
-          { id: '9', name: 'The Bounty Sizzlers', rating: 4.6, cuisine: 'Sizzlers', location: { lat: 18.5488, lng: 73.9054, address: 'Kalyani Nagar', city: 'Pune' } },
-          { id: '10', name: 'Little Italy', rating: 4.4, cuisine: 'Italian', location: { lat: 18.5350, lng: 73.8382, address: 'Shivajinagar', city: 'Pune' } }
-        ]
-        setVenues(mockData)
+        const query = searchQuery.trim() || 'restaurant'
+        const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
+          params: {
+            q: `${query} in Pune`,
+            format: 'json',
+            limit: 12
+          }
+        })
+        
+        const mappedVenues = response.data
+          .filter((item: any) => item.name) // ensure it has a name
+          .map((item: any) => ({
+            id: item.place_id.toString(),
+            name: item.name,
+            rating: (Math.random() * (5.0 - 3.8) + 3.8).toFixed(1),
+            cuisine: item.type === 'restaurant' ? 'Dining' : (item.type.charAt(0).toUpperCase() + item.type.slice(1)),
+            location: {
+              lat: parseFloat(item.lat),
+              lng: parseFloat(item.lon),
+              address: item.display_name.split(',')[1]?.trim() || item.display_name.split(',')[0],
+              city: 'Pune'
+            }
+          }))
+        
+        // Remove duplicates by name
+        const unique = mappedVenues.filter((v: Venue, i: number, a: Venue[]) => a.findIndex(t => (t.name === v.name)) === i)
+        setVenues(unique)
+      } catch (err) {
+        console.error("Failed to fetch venues", err)
       } finally {
         setLoading(false)
       }
     }
-    loadVenues()
-  }, [])
+    
+    const timeoutId = setTimeout(() => {
+      fetchPlaces()
+    }, 500)
+    
+    return () => clearTimeout(timeoutId)
+  }, [searchQuery])
 
   const fetchAiReview = async (venue: Venue) => {
     setAiLoading(true)
@@ -141,7 +161,6 @@ function App() {
     if (window.innerWidth < 1024) setSidebarOpen(false)
   }
 
-  const filteredVenues = venues.filter(v => v.name.toLowerCase().includes(searchQuery.toLowerCase()))
   const selectedVenue = venues.find(v => v.id === selectedVenueId) || null
 
   return (
@@ -183,10 +202,10 @@ function App() {
               <Loader2 className="w-8 h-8 animate-spin text-purple-400 mb-4" />
               <span className={`font-medium ${isDark ? 'text-slate-300' : 'text-slate-500'}`}>Scanning area...</span>
             </div>
-          ) : filteredVenues.length === 0 ? (
+          ) : venues.length === 0 ? (
             <p className={`text-center py-8 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>No venues found matching your criteria.</p>
           ) : (
-            filteredVenues.map(venue => (
+            venues.map(venue => (
               <button
                 key={venue.id}
                 onClick={() => handleVenueClick(venue.id)}
@@ -222,7 +241,7 @@ function App() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           <MapController selectedVenue={selectedVenue} />
-          {filteredVenues.map(venue => (
+          {venues.map(venue => (
             <Marker 
               key={venue.id} 
               position={[venue.location.lat, venue.location.lng]}
@@ -244,7 +263,7 @@ function App() {
             {/* Header Image Area */}
             <div className="relative h-64 bg-slate-800 overflow-hidden shrink-0">
               <img 
-                src={`https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80`} 
+                src={`https://picsum.photos/seed/${selectedVenue.id}/800/400`} 
                 alt="Restaurant atmosphere" 
                 className="w-full h-full object-cover opacity-60"
               />
