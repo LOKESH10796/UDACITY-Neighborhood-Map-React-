@@ -112,7 +112,7 @@ function App() {
         {
           contents: [{
             parts: [{
-              text: \`You are a snarky, fun, and highly creative food critic. Write a short, funny, engaging 2-sentence review about the restaurant "\${venue.name}" located at "\${venue.location.address}" in \${venue.location.city}.\`
+              text: `You are a snarky, fun, and highly creative food critic. Write a short, funny, engaging 2-sentence review about the restaurant "${venue.name}" located at "${venue.location.address}" in ${venue.location.city}.`
             }]
           }]
         }
@@ -144,7 +144,7 @@ function App() {
   return (
     <div className="min-h-screen bg-slate-900 flex overflow-hidden font-sans">
       {/* Sidebar */}
-      <aside className={\`fixed inset-y-0 left-0 w-80 bg-white/10 backdrop-blur-3xl border-r border-white/20 transform transition-transform duration-500 z-[1000] lg:relative flex flex-col shadow-2xl \${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}\`}>
+      <aside className={`fixed inset-y-0 left-0 w-80 bg-white/10 backdrop-blur-3xl border-r border-white/20 transform transition-transform duration-500 z-[1000] lg:relative flex flex-col shadow-2xl ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-between shadow-lg relative overflow-hidden">
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="flex items-center gap-3 relative z-10">
@@ -179,13 +179,13 @@ function App() {
               <button
                 key={venue.id}
                 onClick={() => handleVenueClick(venue.id)}
-                className={\`w-full text-left p-4 rounded-xl transition-all duration-300 border \${
+                className={`w-full text-left p-4 rounded-xl transition-all duration-300 border ${
                   selectedVenueId === venue.id
                     ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.4)] transform scale-[1.02]'
                     : 'bg-white/5 border-white/10 hover:border-purple-400/50 hover:bg-white/10'
-                }\`}
+                }`}
               >
-                <p className={\`font-bold text-lg tracking-wide \${selectedVenueId === venue.id ? 'text-purple-300' : 'text-slate-100'}\`}>{venue.name}</p>
+                <p className={`font-bold text-lg tracking-wide ${selectedVenueId === venue.id ? 'text-purple-300' : 'text-slate-100'}`}>{venue.name}</p>
                 {venue.location.address && (
                   <p className="text-sm text-slate-400 mt-1 flex items-center gap-1.5">
                     <Navigation className="w-3 h-3" /> {venue.location.address}
