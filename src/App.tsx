@@ -263,7 +263,7 @@ function App() {
             {/* Header Image Area */}
             <div className="relative h-64 bg-slate-800 overflow-hidden shrink-0">
               <img 
-                src={`https://picsum.photos/seed/${selectedVenue.id}/800/400`} 
+                src={`https://loremflickr.com/800/400/restaurant,food/all?lock=${selectedVenue.id}`} 
                 alt="Restaurant atmosphere" 
                 className="w-full h-full object-cover opacity-60"
               />
