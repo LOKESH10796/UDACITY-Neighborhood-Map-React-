@@ -48,6 +48,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-Lokesh Gounder - [twitter.com/lokeshgounder](https://twitter.com/lokeshgounder) - lokeshgounder@gmail.com
+Lokesh Gounder - - lokeshgounder@gmail.com
 
 Project Link: [https://github.com/LOKESH10796/UDACITY-Neighborhood-Map-React-](https://github.com/LOKESH10796/UDACITY-Neighborhood-Map-React-)
