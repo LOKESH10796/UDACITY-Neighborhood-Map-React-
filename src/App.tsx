@@ -53,43 +53,23 @@ function App() {
       setLoading(true)
       setError(null)
       try {
-        const results = await Promise.all(
-          searchVenueParams.map(async (params) => {
-            const url = new URL(FOURSQUARE_API)
-            url.searchParams.set('client_id', CLIENT_ID)
-            url.searchParams.set('client_secret', CLIENT_SECRET)
-            url.searchParams.set('v', '20240101')
-            url.searchParams.set('near', params.near)
-            url.searchParams.set('query', params.query)
-            url.searchParams.set('ll', params.ll)
-            url.searchParams.set('limit', params.limit.toString())
+        await new Promise(resolve => setTimeout(resolve, 800))
+        
+        const mockData = [
+          { id: '1', name: 'Café GoodLuck', location: { lat: 18.5172, lng: 73.8414, address: 'Fergusson College Rd', city: 'Pune' } },
+          { id: '2', name: 'Incognito', location: { lat: 18.5617, lng: 73.9168, address: 'Phoenix Market City', city: 'Pune' } },
+          { id: '3', name: 'Hard Rock Cafe', location: { lat: 18.5390, lng: 73.9128, address: 'Koregaon Park', city: 'Pune' } },
+          { id: '4', name: 'Barbeque Nation', location: { lat: 18.5165, lng: 73.8423, address: 'Deccan Gymkhana', city: 'Pune' } },
+          { id: '5', name: 'Cafe Goa', location: { lat: 18.5618, lng: 73.9071, address: 'Viman Nagar', city: 'Pune' } },
+          { id: '6', name: 'Blue Nile', location: { lat: 18.5219, lng: 73.8775, address: 'Camp', city: 'Pune' } },
+          { id: '7', name: 'Way Down South', location: { lat: 18.5664, lng: 73.7708, address: 'Baner', city: 'Pune' } },
+          { id: '8', name: 'Suonmoi Chinese Restaurant', location: { lat: 18.5375, lng: 73.8797, address: 'Koregaon Park', city: 'Pune' } },
+          { id: '9', name: 'The Bounty Sizzlers', location: { lat: 18.5488, lng: 73.9054, address: 'Kalyani Nagar', city: 'Pune' } },
+          { id: '10', name: 'Little Italy', location: { lat: 18.5350, lng: 73.8382, address: 'Shivajinagar', city: 'Pune' } }
+        ]
 
-            const res = await fetch(url.toString())
-            if (!res.ok) throw new Error(`Failed to load ${params.query}`)
-            const data = await res.json()
-            
-            const venue = data.response.venues?.[0]
-            if (!venue) return null
-
-            return {
-              id: venue.id,
-              name: venue.name,
-              location: {
-                lat: venue.location.lat,
-                lng: venue.location.lng,
-                address: venue.location.address ?? '',
-                city: venue.location.city ?? '',
-                state: venue.location.state ?? '',
-                postalCode: venue.location.postalCode ?? ''
-              }
-            } as Venue | null
-          })
-        )
-
-        const validVenues = results.filter((v): v is Venue => v !== null)
-        setVenues(validVenues)
-
-        const newMarkers = validVenues.map(v => ({
+        setVenues(mockData)
+        const newMarkers = mockData.map(v => ({
           id: v.id,
           lat: v.location.lat,
           lng: v.location.lng,
